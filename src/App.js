@@ -1,4 +1,8 @@
+// libs
 import styled, {createGlobalStyle} from "styled-components";
+
+// components
+import Editor from './components/Editor';
 
 const GlobalStyles = createGlobalStyle`
   * {
@@ -20,7 +24,7 @@ function App() {
   return (
     <>
       <AppStyles>
-        ss
+        <Editor />
       </AppStyles>
       <GlobalStyles />
     </>
