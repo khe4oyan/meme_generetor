@@ -13,6 +13,7 @@ const GlobalStyles = createGlobalStyle`
   }
   body {
     min-height: 100dvh;
+    background-color: #00000022;
   }
 `;
 
