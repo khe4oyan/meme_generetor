@@ -40,15 +40,19 @@ export default function Editor() {
   useEffect(() => {
     if (ctx) {
       const canvas = canvasRef.current;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
 
       if (img) {
         ctx.drawImage(img, 0, 0);
       }
 
+      const margin = 50;
       ctx.font = "50px Arial";
-      ctx.fillText(topText, 10, 80);
-      ctx.fillText(bottomText, 10, 300);
+      ctx.textAlign = "center";
+      ctx.fillText(topText, w / 2, margin);
+      ctx.fillText(bottomText, w / 2, h - margin);
     }
   }, [img, topText, bottomText]);
 
@@ -60,19 +64,28 @@ export default function Editor() {
     img.src = URL.createObjectURL(file);
 
     img.onload = () => {
-      setImg(img);
       if (canvasRef.current) {
         canvasRef.current.width = img.width;
         canvasRef.current.height = img.height;
       }
+      setImg(img);
     };
   };
 
   const onTopTextChange = (e) => {
     setTopText(e.target.value);
   }
+
   const onTopBottomChange = (e) => {
     setBottomText(e.target.value);
+  }
+
+  const onDownloadImg = () => {
+    const canvas = canvasRef.current;
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL('image/png'); // Получаем данные в формате PNG
+    link.download = 'result.png'; // Имя файла
+    link.click();
   }
 
   return (
@@ -86,6 +99,8 @@ export default function Editor() {
           accept="image/*"
           onChange={onUploadImage}
         />
+
+        <button onClick={onDownloadImg}>download</button>
         
         <input
           type="text"
