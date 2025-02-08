@@ -19,6 +19,7 @@ const ControlPanel = styled.div`
 
 export default function Editor() {
   const canvasRef = useRef(null);
+  const [img, setImg] = useState(null);
   const [ctx, setCtx] = useState(null);
   const [topText, setTopText] = useState("");
   const [bottomText, setBottomText] = useState("");
@@ -36,19 +37,43 @@ export default function Editor() {
     }
   }, []);
 
-  const uploadImage = (event) => {
+  useEffect(() => {
+    if (ctx) {
+      const canvas = canvasRef.current;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (img) {
+        ctx.drawImage(img, 0, 0);
+      }
+
+      ctx.font = "50px Arial";
+      ctx.fillText(topText, 10, 80);
+      ctx.fillText(bottomText, 10, 300);
+    }
+  }, [img, topText, bottomText]);
+
+  const onUploadImage = (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
     const img = new Image();
-    img.onload = () => {
-      canvasRef.current.width = img.width;
-      canvasRef.current.height = img.height;
-      ctx.drawImage(img, 0, 0);
-    };
-
     img.src = URL.createObjectURL(file);
+
+    img.onload = () => {
+      setImg(img);
+      if (canvasRef.current) {
+        canvasRef.current.width = img.width;
+        canvasRef.current.height = img.height;
+      }
+    };
   };
+
+  const onTopTextChange = (e) => {
+    setTopText(e.target.value);
+  }
+  const onTopBottomChange = (e) => {
+    setBottomText(e.target.value);
+  }
 
   return (
     <div>
@@ -59,21 +84,21 @@ export default function Editor() {
           type="file"
           id="uploadInput"
           accept="image/*"
-          onChange={uploadImage}
+          onChange={onUploadImage}
         />
         
         <input
           type="text"
           placeholder="Top text"
           value={topText}
-          onChange={(e) => setTopText(e.target.value)}
+          onChange={onTopTextChange}
         />
 
         <input
           type="text"
           placeholder="Bottom text"
           value={bottomText}
-          onChange={(e) => setBottomText(e.target.value)}
+          onChange={onTopBottomChange}
         />
       </ControlPanel>
     </div>
