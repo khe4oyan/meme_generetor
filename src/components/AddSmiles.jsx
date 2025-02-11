@@ -15,18 +15,16 @@ export default function AddSmiles({ ctx, cnv, smiles, setSmiles }) {
     setSmiles(prev => [...prev, {
       posX: cnv?.width / 2,
       posY: cnv?.height / 2,
-      rotate: 0,
     }]);
   }
 
-  const setOptions = (ind, x, y, r) => {
+  const setOptions = (ind, x, y) => {
     setSmiles(prev => {
       const newPrev = [...prev];
 
       const data = prev[ind];
       data.posX = x;
       data.posY = y;
-      data.rotate = r;
 
       return newPrev;
     });

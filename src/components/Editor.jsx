@@ -40,12 +40,7 @@ export default function Editor() {
   const [bottomText, setBottomText] = useState("");
   const [bottomTextColor, setBottomTextColor] = useState("#000000");
   
-  const [smiles, setSmiles] = useState([
-    {
-      posX: 10,
-      posY: 10,
-    }
-  ]);
+  const [smiles, setSmiles] = useState([]);
 
   const drawSmiles = (ctx) => {
     
