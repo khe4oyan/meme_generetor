@@ -1,16 +1,52 @@
 // libs
 import styled from "styled-components";
 
+// compoenents
+import SmileData from "./SmileData";
+
 const Root = styled.div`
   button, input {
     padding: 2px 4px;
   }
 `;
 
-export default function AddSmiles({ ctx }) {
+export default function AddSmiles({ ctx, cnv, smiles, setSmiles }) {
+  const onAddSmile = () => {
+    setSmiles(prev => [...prev, {
+      posX: cnv?.width / 2,
+      posY: cnv?.height / 2,
+      rotate: 0,
+    }]);
+  }
+
+  const setOptions = (ind, x, y, r) => {
+    setSmiles(prev => {
+      const newPrev = [...prev];
+
+      const data = prev[ind];
+      data.posX = x;
+      data.posY = y;
+      data.rotate = r;
+
+      return newPrev;
+    });
+  }
+
   return (
     <Root>
-      <button>add smile</button>
+      <button onClick={onAddSmile}>add smile</button>
+
+      {
+        smiles.map((smileData,i ) =>
+          <SmileData 
+            data={smileData} 
+            ind={i}
+            ctx={ctx}
+            setOptions={setOptions}
+            key={i}
+          />
+        )
+      }
     </Root>
   );
 }

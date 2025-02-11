@@ -5,6 +5,9 @@ import styled from "styled-components";
 // components
 import AddSmiles from "./AddSmiles";
 
+// emoji
+import emojiImg from '../assets/emoji.png';
+
 const ControlPanel = styled.div`
   display: flex;
   flex-direction: column;
@@ -30,12 +33,32 @@ export default function Editor() {
   const canvasRef = useRef(null);
   const [img, setImg] = useState(null);
   const [ctx, setCtx] = useState(null);
-
+  
   const [topText, setTopText] = useState("");
   const [topTextColor, setTopTextColor] = useState("#000000");
-
+  
   const [bottomText, setBottomText] = useState("");
   const [bottomTextColor, setBottomTextColor] = useState("#000000");
+  
+  const [smiles, setSmiles] = useState([
+    {
+      posX: 10,
+      posY: 10,
+    }
+  ]);
+
+  const drawSmiles = (ctx) => {
+    
+    for (let i = 0; i < smiles.length; ++i) {
+      const { posX, posY } = smiles[i];
+      
+      const image = new Image();
+      image.src = emojiImg;
+      image.onload = function() {
+        ctx.drawImage(image, posX, posY, 50, 50);
+      };
+    }
+  };
 
   useEffect(() => {
     // canvas initialization
@@ -74,8 +97,10 @@ export default function Editor() {
 
       topText && addText(ctx, topText, topTextColor, w / 2, margin);
       bottomText && addText(ctx, bottomText, bottomTextColor, w / 2, h - margin);
+
+      drawSmiles(ctx);
     }
-  }, [img, topText, bottomText, topTextColor, bottomTextColor]);
+  }, [img, topText, bottomText, topTextColor, bottomTextColor, smiles]);
 
   const onUploadImage = (event) => {
     const file = event.target.files[0];
@@ -157,7 +182,12 @@ export default function Editor() {
           onChange={onTopBottomColorChange}
         />
 
-        <AddSmiles ctx={ctx}/>
+        <AddSmiles 
+          ctx={ctx} 
+          cnv={canvasRef.current} 
+          smiles={smiles} 
+          setSmiles={setSmiles}
+        />
       </ControlPanel>
     </div>
   );
