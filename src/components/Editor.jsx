@@ -2,6 +2,9 @@
 import { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 
+// components
+import AddSmiles from "./AddSmiles";
+
 const ControlPanel = styled.div`
   display: flex;
   flex-direction: column;
@@ -153,6 +156,8 @@ export default function Editor() {
           value={bottomTextColor}
           onChange={onTopBottomColorChange}
         />
+
+        <AddSmiles ctx={ctx}/>
       </ControlPanel>
     </div>
   );
