@@ -28,23 +28,28 @@ export default function AddSmiles({ ctx, cnv, smiles, setSmiles }) {
 
       return newPrev;
     });
+  };
+
+  const removeSmile = (ind) => {
+    setSmiles(prev => {
+      const newPrev = prev.filter((item, i) => i !== ind);
+      return newPrev;
+    });
   }
 
   return (
     <Root>
       <button onClick={onAddSmile}>add smile</button>
 
-      {
-        smiles.map((smileData,i ) =>
-          <SmileData 
-            data={smileData} 
-            ind={i}
-            ctx={ctx}
-            setOptions={setOptions}
-            key={i}
-          />
-        )
-      }
+      {smiles.map((smileData,i ) =>
+        <SmileData 
+          data={smileData} 
+          ind={i}
+          setOptions={setOptions}
+          removeSmile={removeSmile}
+          key={i}
+        />
+      )}
     </Root>
   );
 }
